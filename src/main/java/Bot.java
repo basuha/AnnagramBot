@@ -1,4 +1,4 @@
-import lombok.*;
+
 import org.apache.log4j.Logger;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -31,7 +31,6 @@ public class Bot extends TelegramLongPollingBot {
     String userName;
     String token;
 
-    @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
         UpdateLogger.log(update);

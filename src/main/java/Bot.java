@@ -2,16 +2,9 @@ import lombok.*;
 import org.apache.log4j.Logger;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,14 +23,10 @@ public class Bot extends TelegramLongPollingBot {
     @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
+        UpdateLogger.log(update);
 
         Long chatId = update.getMessage().getChatId();
         String inputText = update.getMessage().getText();
-
-        log.info("Receive new Update -> updateID: " + update.getUpdateId()
-                + " Text: " + inputText
-                + " From User: " + update.getMessage().getFrom().getUserName()
-                + " From Chat: " + update.getMessage().getChat().getTitle());
 
         System.out.println(update.getMessage().getSticker());
 

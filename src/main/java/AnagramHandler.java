@@ -1,13 +1,14 @@
 import com.google.common.base.Joiner;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class AnagramHandler {
     private static final Logger log = Logger.getLogger(AnagramHandler.class);
@@ -18,7 +19,14 @@ public class AnagramHandler {
     private static final List<String> dictionary = new ArrayList<>();
     private static final String DICTIONARY_FILE = "src/main/resources/rus_comm_noun.txt";
 
-    private static final String MESSAGE = "Угадайте следующие слова: \n <b>";
+    private static final String MESSAGE = "Угадайте следующие слова: \n ";
+    private static final String OP_B_TAG = "<b>";
+    private static final String CL_B_TAG = "</b>";
+
+    private String chatID;
+    private String inputText;
+
+    private Bot bot;
 
     static {
         try {
@@ -34,6 +42,15 @@ public class AnagramHandler {
         }
     }
 
+    public AnagramHandler(Bot bot) {
+        this.bot = bot;
+        refresh();
+    }
+
+    public void process(Update update) {
+
+    }
+
     public void get() {
         log.info(anagramMap.size());
         String nextWord = dictionary.get(new Random().nextInt(dictionary.size()));
@@ -41,45 +58,53 @@ public class AnagramHandler {
         log.info(anagramMap);
     }
 
-    public void remove(String word) {
-        if (anagramMap.containsKey(word)) {
-            anagramMap.remove(word);
-        } else {
-            get();
+    public String guess(String message, User user) {
+        for (String w : message.toLowerCase()
+                .replaceAll("([?!:;,.])", "")
+                .replaceAll("([\\-`_])", " ")
+                .split(" ")) {
+            if (anagramMap.containsKey(w)) {
+                anagramMap.remove(w);
+                return anagramMap.get(w) + " - угадано! Победитель " + user.getUserName();
+            }
         }
+        return null;
     }
 
-    public void refresh() {
-        for (int i = anagramMap.size(); i < ANAGRAM_LIMIT; i++) {
+    private void refresh() {
+        for (int i = anagramMap.size(); i < ANAGRAM_LIMIT; i++)
             get();
-        }
     }
 
     private static String anagramize(String word) {
         List<Character> anagram = new ArrayList<>();
+        String request;
 
         for (int i = 0; i < word.length(); i++)
             anagram.add(null);
 
-        for (Character c : word.toLowerCase().toCharArray()) {
-            int index;
-            do {
-                index = new Random().nextInt(word.length());
-            } while (anagram.get(index) != null);
-            anagram.set(index, c);
-        }
-        return StringUtils.capitalize(Joiner.on("").join(anagram));
+        do {
+            for (Character c : word.toLowerCase().toCharArray()) {
+                int index;
+                do {
+                    index = new Random().nextInt(word.length());
+                } while (anagram.get(index) != null);
+                anagram.set(index, c);
+            }
+            request = Joiner.on("").join(anagram);
+        } while (request.equals(word));
+
+        return StringUtils.capitalize(request);
     }
 
     public String getMessage() {
-        StringBuilder message = new StringBuilder(MESSAGE);
-
+        StringBuilder message = new StringBuilder(MESSAGE + OP_B_TAG);
 
         for (Map.Entry<String, String> m : anagramMap.entrySet()) {
             message.append(m.getValue())
                     .append(" ");
         }
-        message.append("</b>");
+        message.append(CL_B_TAG);
 
         return message.toString();
     }

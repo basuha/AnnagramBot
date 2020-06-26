@@ -1,5 +1,6 @@
 import com.google.common.base.Joiner;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,11 +10,15 @@ import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class AnagramHandler {
-    private static final int ANAGRAM_LIMIT = 3;
-    private Queue<String> anagramQueue = new LinkedBlockingQueue<>(ANAGRAM_LIMIT);
+    private static final Logger log = Logger.getLogger(AnagramHandler.class);
+
+    private static final int ANAGRAM_LIMIT = 5;
+    private Map<String, String> anagramMap = new LinkedHashMap<>();
 
     private static final List<String> dictionary = new ArrayList<>();
     private static final String DICTIONARY_FILE = "src/main/resources/rus_comm_noun.txt";
+
+    private static final String MESSAGE = "Угадайте следующие слова: \n <b>";
 
     static {
         try {
@@ -29,9 +34,25 @@ public class AnagramHandler {
         }
     }
 
-    public String get() {
-        anagramQueue.add(dictionary.get(new Random().nextInt(dictionary.size())));
-        return anagramize(anagramQueue.peek());
+    public void get() {
+        log.info(anagramMap.size());
+        String nextWord = dictionary.get(new Random().nextInt(dictionary.size()));
+        anagramMap.put(nextWord, anagramize(nextWord));
+        log.info(anagramMap);
+    }
+
+    public void remove(String word) {
+        if (anagramMap.containsKey(word)) {
+            anagramMap.remove(word);
+        } else {
+            get();
+        }
+    }
+
+    public void refresh() {
+        for (int i = anagramMap.size(); i < ANAGRAM_LIMIT; i++) {
+            get();
+        }
     }
 
     private static String anagramize(String word) {
@@ -48,6 +69,19 @@ public class AnagramHandler {
             anagram.set(index, c);
         }
         return StringUtils.capitalize(Joiner.on("").join(anagram));
+    }
+
+    public String getMessage() {
+        StringBuilder message = new StringBuilder(MESSAGE);
+
+
+        for (Map.Entry<String, String> m : anagramMap.entrySet()) {
+            message.append(m.getValue())
+                    .append(" ");
+        }
+        message.append("</b>");
+
+        return message.toString();
     }
 
     public static void main(String[] args) {

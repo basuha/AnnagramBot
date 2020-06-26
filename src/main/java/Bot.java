@@ -2,6 +2,7 @@ import lombok.*;
 import org.apache.log4j.Logger;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
@@ -29,11 +30,20 @@ public class Bot extends TelegramLongPollingBot {
         String inputText = update.getMessage().getText();
 
         System.out.println(update.getMessage().getSticker());
+//
+//        SendSticker sendSticker = new SendSticker();
+//        sendSticker.setChatId(chatId);
+//        sendSticker.setSticker(Sticker.THUMB_UP_CAT.toString());
+//        execute(sendSticker);
 
-        SendSticker sendSticker = new SendSticker();
-        sendSticker.setChatId(chatId);
-        sendSticker.setSticker(Sticker.THUMB_UP_CAT.toString());
-        execute(sendSticker);
+        AnagramHandler anagramHandler = new AnagramHandler();
+        anagramHandler.refresh();
+
+        SendMessage sendMessage = new SendMessage(chatId, anagramHandler.getMessage());
+        sendMessage.enableHtml(true);
+        execute(sendMessage);
+
+        anagramHandler.remove(update.getMessage().getText());
 
     }
 

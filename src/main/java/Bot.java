@@ -1,12 +1,17 @@
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.apache.log4j.Logger;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,6 +27,7 @@ public class Bot extends TelegramLongPollingBot {
     @Getter
     String token;
 
+    @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
 
@@ -33,7 +39,12 @@ public class Bot extends TelegramLongPollingBot {
                 + " From User: " + update.getMessage().getFrom().getUserName()
                 + " From Chat: " + update.getMessage().getChat().getTitle());
 
+        System.out.println(update.getMessage().getSticker());
 
+        SendSticker sendSticker = new SendSticker();
+        sendSticker.setChatId(chatId);
+        sendSticker.setSticker(Sticker.THUMB_UP_CAT.toString());
+        execute(sendSticker);
 
     }
 

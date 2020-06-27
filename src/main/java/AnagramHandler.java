@@ -27,6 +27,7 @@ public class AnagramHandler implements Runnable {
     private static final String CL_B_TAG = "</b>";
 
     private static final String TASK_COMMAND = "/task";
+    private static final String RATING_COMMAND = "/rating";
 
     private String chatID;
     private String inputText;
@@ -90,7 +91,7 @@ public class AnagramHandler implements Runnable {
             if (task.containsKey(w)) {
                 String guessed = task.remove(w);
                 return OP_B_TAG + guessed + CL_B_TAG + " - угадано! " +
-                        "Ответ: " + OP_B_TAG + w + CL_B_TAG + ". " +
+                        "Ответ: " + OP_B_TAG + w.toUpperCase() + CL_B_TAG + ". " +
                         "Победитель " + OP_B_TAG + user.getUserName() + CL_B_TAG;
             }
         }
@@ -102,7 +103,7 @@ public class AnagramHandler implements Runnable {
             get();
     }
 
-    private static String anagramize(String word) {
+    private String anagramize(String word) {
         List<Character> anagram = new ArrayList<>();
         String request;
 

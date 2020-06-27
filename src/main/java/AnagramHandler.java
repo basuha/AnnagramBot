@@ -54,8 +54,11 @@ public class AnagramHandler implements Runnable {
     }
 
     public void process(Update update) throws TelegramApiException {
+        switch (update.getMessage().getText()) {
+            case TASK_COMMAND: showTask(update.getMessage().getChatId());
+        }
         if (update.getMessage().getText().equals(TASK_COMMAND)) {
-            showTask(update.getMessage().getChatId());
+
         } else {
             String guessed = guess(update.getMessage().getText(), update.getMessage().getFrom());
             if (guessed != null) {
@@ -92,7 +95,7 @@ public class AnagramHandler implements Runnable {
                 String guessed = task.remove(w);
                 return OP_B_TAG + guessed + CL_B_TAG + " - угадано! " +
                         "Ответ: " + OP_B_TAG + w.toUpperCase() + CL_B_TAG + ". " +
-                        "Победитель " + OP_B_TAG + user.getUserName() + CL_B_TAG;
+                        "Победитель " + OP_B_TAG + "@" + user.getUserName() + CL_B_TAG;
             }
         }
         return null;

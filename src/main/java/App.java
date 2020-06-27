@@ -7,7 +7,7 @@ public class App {
     private static final String BOT_ADMIN = "312541201";
 
     public static void main(String[] args) {
-        log.trace("test");
+        log.info("App is starting...");
         ApiContextInitializer.init();
         Bot annagramBot = new Bot("AnnagramBot", "1268361427:AAEBI07yEkQ5PbDkczeq0V9stcZ0GmRe5-E");
 

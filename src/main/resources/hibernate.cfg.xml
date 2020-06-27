@@ -43,6 +43,7 @@
 
 
         <mapping class="Score"/>
+        <mapping class="Task"/>
 
 </session-factory>
 

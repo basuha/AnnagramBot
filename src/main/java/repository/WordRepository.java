@@ -1,15 +1,12 @@
 package repository;
 
-import pojo.Task;
 import pojo.Word;
-
-import javax.persistence.Query;
 import java.util.Random;
 
 public class WordRepository extends AbstractRepository {
 
     private static int maxID() {
-        query = session.createQuery("SELECT max(wordID) FROM Word");
+        query = session.createQuery("SELECT max(ID) FROM Word");
         return (int) query.getSingleResult();
     }
 
@@ -23,7 +20,7 @@ public class WordRepository extends AbstractRepository {
 
     public static String get() {
         openSession();
-        query = session.createQuery("FROM Word WHERE wordID = " + new Random().nextInt(maxID()));
+        query = session.createQuery("FROM Word WHERE ID = " + new Random().nextInt(maxID()));
         Word word = (Word) query.getSingleResult();
         closeSession();
         return word.toString();

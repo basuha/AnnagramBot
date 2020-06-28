@@ -21,7 +21,6 @@ public class AnagramHandler implements Runnable {
     private Map<String, String> task = new LinkedHashMap<>();
 
     private static final List<String> dictionary = new ArrayList<>();
-    private static final String DICTIONARY_FILE = "src/main/resources/rus_comm_noun.txt";
 
     private static final String NEXT_LINE = "\n";
     private static final String MESSAGE = "Угадайте следующие слова: " + NEXT_LINE;
@@ -37,20 +36,6 @@ public class AnagramHandler implements Runnable {
     private String inputText;
 
     private Bot bot;
-
-    static {
-        try {
-            BufferedReader reader = Files.newBufferedReader(Paths.get(DICTIONARY_FILE));
-            String temp;
-            do {
-                temp = reader.readLine();
-                if (temp == null) break;
-                dictionary.add(temp);
-            } while (true);
-        } catch (IOException e) {
-            System.err.println("File " + DICTIONARY_FILE + "Not found");
-        }
-    }
 
     public AnagramHandler(Bot bot) {
         this.bot = bot;

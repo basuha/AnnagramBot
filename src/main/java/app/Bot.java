@@ -39,25 +39,6 @@ public class Bot extends TelegramLongPollingBot {
         receiveQueue.add(update);
     }
 
-    public static void main(String[] args) {
-        WordRepository.add("asd");
-        WordRepository.add("asd");
-        WordRepository.add("asd");
-        WordRepository.add("asd");
-        TaskRepository.add(new Task(123124,"asd","asdfgg"));
-        TaskRepository.add(new Task(123124,"asd","asdfgg"));
-        TaskRepository.add(new Task(123124,"asd","asdfgg"));
-        TaskRepository.add(new Task(123124,"asd","asdfgg"));
-        TaskRepository.add(new Task(123124,"asd","asdfgg"));
-        TaskRepository.add(new Task(123124,"asd","asdfgg"));
-        TaskRepository.add(new Task(123124,"asd","asdfgg"));
-        System.out.println(WordRepository.get());
-        System.out.println(WordRepository.get());
-        System.out.println(WordRepository.get());
-        System.out.println(WordRepository.get());
-        System.out.println(WordRepository.get());
-    }
-
     @Override
     public String getBotUsername() {
         return userName;

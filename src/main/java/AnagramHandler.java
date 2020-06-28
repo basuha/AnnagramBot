@@ -59,22 +59,6 @@ public class AnagramHandler implements Runnable {
         refresh();
     }
 
-    public static void main(String[] args) {
-        Task task = new Task(1231536, "asdasd", "asdfd");
-        TaskRepository.add(task);
-        TaskRepository.add(task);
-        TaskRepository.add(task);
-        TaskRepository.add(task);
-        TaskRepository.add(task);
-        TaskRepository.add(task);
-        TaskRepository.add(task);
-        TaskRepository.add(task);
-        TaskRepository.add(task);
-//        Task task = TaskRepository.getByChatID(1);
-//        System.out.println(task);
-
-    }
-
     public void process(Update update) throws TelegramApiException {
         switch (update.getMessage().getText()) {
             case TASK_COMMAND:

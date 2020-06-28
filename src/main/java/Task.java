@@ -3,7 +3,6 @@ import javax.persistence.*;
 import java.util.Map;
 
 @Entity
-@Table(name = "task_master")
 public class Task {
 
     @Id

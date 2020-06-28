@@ -2,6 +2,7 @@ package repository;
 
 import pojo.Task;
 
+import javax.persistence.Transient;
 import java.util.List;
 
 public class TaskRepository extends AbstractRepository {
@@ -22,7 +23,7 @@ public class TaskRepository extends AbstractRepository {
         closeSession();
     }
 
-    public static List<Task> getByChatID(long chatID) {
+    public static List<Task> get(long chatID) {
         openSession();
         query = session.createQuery("FROM Task WHERE chatID = " + chatID);
         List<Task> tasks = query.getResultList();

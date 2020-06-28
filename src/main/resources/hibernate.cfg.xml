@@ -5,7 +5,7 @@
     <session-factory>
 
     <property name="hibernate.dialect">
-        app.SQLiteDialect
+        utilities.SQLiteDialect
     </property>
 
     <property name="hibernate.connection.driver_class">

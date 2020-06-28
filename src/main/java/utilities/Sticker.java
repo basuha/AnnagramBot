@@ -1,4 +1,4 @@
-package app;
+package utilities;
 
 public enum Sticker {
     THUMB_UP_CHUCK("CAACAgUAAxkBAAMXXvWoGyXPu5cE8_BIDt7eOXCV5mEAAm4DAALpCsgDfDQPP9rsBG0aBA"),

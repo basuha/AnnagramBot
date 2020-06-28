@@ -1,4 +1,4 @@
-package app;
+package utilities;
 
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.function.SQLFunctionTemplate;
@@ -133,17 +133,17 @@ public class SQLiteDialect extends Dialect {
     }
 
     public String getDropForeignKeyString() {
-        throw new UnsupportedOperationException("No drop foreign key syntax supported by app.SQLiteDialect");
+        throw new UnsupportedOperationException("No drop foreign key syntax supported by utilities.SQLiteDialect");
     }
 
     public String getAddForeignKeyConstraintString(String constraintName,
                                                    String[] foreignKey, String referencedTable, String[] primaryKey,
                                                    boolean referencesPrimaryKey) {
-        throw new UnsupportedOperationException("No add foreign key syntax supported by app.SQLiteDialect");
+        throw new UnsupportedOperationException("No add foreign key syntax supported by utilities.SQLiteDialect");
     }
 
     public String getAddPrimaryKeyConstraintString(String constraintName) {
-        throw new UnsupportedOperationException("No add primary key syntax supported by app.SQLiteDialect");
+        throw new UnsupportedOperationException("No add primary key syntax supported by utilities.SQLiteDialect");
     }
 
     public boolean supportsIfExistsBeforeTableName() {

@@ -1,4 +1,4 @@
-package app;
+package utilities;
 
 import javafx.util.Pair;
 import org.apache.log4j.Logger;

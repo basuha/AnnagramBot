@@ -1,15 +1,9 @@
 package pojo;
 
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import repository.TaskRepository;
-
 import javax.persistence.*;
-import java.util.Map;
 
 @Entity
-public class Task {
+public class Task{
 
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE,

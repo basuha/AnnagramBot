@@ -1,4 +1,4 @@
-package app;
+package utilities;
 
 public class ParsedCommand {
     Command command = Command.NONE;

@@ -3,6 +3,7 @@ package app;
 import org.apache.log4j.Logger;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import utilities.AnagramHandler;
 
 public class App {
     private static final Logger log = Logger.getLogger(App.class);

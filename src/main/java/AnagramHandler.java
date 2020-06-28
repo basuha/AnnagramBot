@@ -1,11 +1,15 @@
 import com.google.common.base.Joiner;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.criteria.internal.CriteriaUpdateImpl;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import javax.persistence.Query;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,9 +29,11 @@ public class AnagramHandler implements Runnable {
     private static final String MESSAGE = "Угадайте следующие слова: " + NEXT_LINE;
     private static final String OP_B_TAG = "<b>";
     private static final String CL_B_TAG = "</b>";
+    private static final String NAME_TAG = "@";
 
     private static final String TASK_COMMAND = "/task";
-    private static final String RATING_COMMAND = "/rating";
+    private static final String LOCAL_RATING_COMMAND = "/rating";
+    private static final String OVERALL_RATING_COMMAND = "/overall";
 
     private String chatID;
     private String inputText;
@@ -53,17 +59,36 @@ public class AnagramHandler implements Runnable {
         refresh();
     }
 
+    public static void main(String[] args) {
+        Task task = new Task(1231536, "asdasd", "asdfd");
+        TaskRepository.add(task);
+        TaskRepository.add(task);
+        TaskRepository.add(task);
+        TaskRepository.add(task);
+        TaskRepository.add(task);
+        TaskRepository.add(task);
+        TaskRepository.add(task);
+        TaskRepository.add(task);
+        TaskRepository.add(task);
+//        Task task = TaskRepository.getByChatID(1);
+//        System.out.println(task);
+
+    }
+
     public void process(Update update) throws TelegramApiException {
         switch (update.getMessage().getText()) {
-            case TASK_COMMAND: showTask(update.getMessage().getChatId());
-        }
-        if (update.getMessage().getText().equals(TASK_COMMAND)) {
-
-        } else {
-            String guessed = guess(update.getMessage().getText(), update.getMessage().getFrom());
-            if (guessed != null) {
-                bot.execute(new SendMessage(update.getMessage().getChatId(),guessed).enableHtml(true));
-            }
+            case TASK_COMMAND:
+                showTask(update.getMessage().getChatId());
+                break;
+            case LOCAL_RATING_COMMAND:
+                System.out.println("rating command");
+                break;
+            case OVERALL_RATING_COMMAND:
+                System.out.println("overall rating");
+            default:
+                String guessed = guess(update.getMessage().getText(), update.getMessage().getFrom());
+                if (guessed != null)
+                    bot.execute(new SendMessage(update.getMessage().getChatId(),guessed).enableHtml(true));
         }
     }
 
@@ -95,7 +120,7 @@ public class AnagramHandler implements Runnable {
                 String guessed = task.remove(w);
                 return OP_B_TAG + guessed + CL_B_TAG + " - угадано! " +
                         "Ответ: " + OP_B_TAG + w.toUpperCase() + CL_B_TAG + ". " +
-                        "Победитель " + OP_B_TAG + "@" + user.getUserName() + CL_B_TAG;
+                        "Победитель " + OP_B_TAG + NAME_TAG + user.getUserName() + CL_B_TAG;
             }
         }
         return null;

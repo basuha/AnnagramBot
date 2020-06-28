@@ -13,11 +13,16 @@
     </property>
 
     <property name="hibernate.connection.url">
-        jdbc:sqlite:ranking-base.db
+        jdbc:sqlite:anna-base.db
     </property>
 
-    <property name="hibernate.connection.provider_class">org.hibernate.c3p0.internal.C3P0ConnectionProvider</property>
+    <property name="hibernate.connection.provider_class">
+        org.hibernate.c3p0.internal.C3P0ConnectionProvider
+    </property>
 
+    <property name="hbm2ddl.auto">
+        update
+    </property>
 
         <property name="c3p0.min_size">5</property>
         <property name="c3p0.max_size">20</property>
@@ -25,12 +30,13 @@
         <property name="c3p0.max_statements">50</property>
         <property name="c3p0.idle_test_period">3000</property>
 
+
     <property name="show_sql">
         true
     </property>
 
     <property name="connection.pool_size">
-        20
+        50
     </property>
 
     <property name="hibernate.default_schema">
@@ -45,6 +51,6 @@
         <mapping class="Score"/>
         <mapping class="Task"/>
 
-</session-factory>
+    </session-factory>
 
 </hibernate-configuration>

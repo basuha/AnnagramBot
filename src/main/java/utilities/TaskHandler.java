@@ -74,7 +74,7 @@ public class TaskHandler {
 
     private void refreshTaskInChat() {
         System.out.println("hi");
-        for (int i = TaskRepository.get(chatID).size(); i < TASK_LIMIT; i++) {
+        for (int i = TaskRepository.get(chatID).size(); i < TASK_LIMIT; i++) { //TODO: new word should add on the place of deleted word
             String word = WordRepository.get();
             TaskRepository.add(new Task(
                     chatID,

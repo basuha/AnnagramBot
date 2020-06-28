@@ -1,3 +1,5 @@
+package pojo;
+
 import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import java.util.Map;
@@ -25,7 +27,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "pojo.Task{" +
                 "taskID=" + taskID +
                 ", chatID=" + chatID +
                 ", taskKey='" + taskKey + '\'' +

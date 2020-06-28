@@ -1,10 +1,8 @@
+package app;
 
 import org.apache.log4j.Logger;
-import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
@@ -43,10 +41,10 @@ public class Bot extends TelegramLongPollingBot {
 //
 //        SendSticker sendSticker = new SendSticker();
 //        sendSticker.setChatId(chatId);
-//        sendSticker.setSticker(Sticker.THUMB_UP_CAT.toString());
+//        sendSticker.setSticker(app.Sticker.THUMB_UP_CAT.toString());
 //        execute(sendSticker);
 
-//        AnagramHandler anagramHandler = new AnagramHandler();
+//        app.AnagramHandler anagramHandler = new app.AnagramHandler();
 //
 //        SendMessage sendMessage = new SendMessage(chatId, anagramHandler.getMessage());
 //        sendMessage.enableHtml(true);

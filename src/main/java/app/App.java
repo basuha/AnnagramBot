@@ -1,3 +1,5 @@
+package app;
+
 import org.apache.log4j.Logger;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -7,7 +9,7 @@ public class App {
     private static final String BOT_ADMIN = "312541201";
 
     public static void main(String[] args) {
-        log.info("App is starting...");
+        log.info("app.App is starting...");
         ApiContextInitializer.init();
         Bot annagramBot = new Bot("AnnagramBot", "1268361427:AAEBI07yEkQ5PbDkczeq0V9stcZ0GmRe5-E");
 

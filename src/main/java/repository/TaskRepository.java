@@ -1,22 +1,10 @@
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+package repository;
 
-import javax.persistence.Query;
-import javax.transaction.Transactional;
+import pojo.Task;
+
 import java.util.List;
 
-public class TaskRepository {
-    private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-    private static Session session;
-    private static Query query;
-
-    private static void openSession() {
-        session = sessionFactory.openSession();
-    }
-
-    private static void closeSession() {
-        if (session != null) session.close();
-    }
+public class TaskRepository extends AbstractRepository {
 
     public static void add(Task task) {
         openSession();

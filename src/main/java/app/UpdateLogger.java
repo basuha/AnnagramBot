@@ -1,3 +1,5 @@
+package app;
+
 import org.apache.log4j.Logger;
 import org.telegram.telegrambots.meta.api.objects.Update;
 

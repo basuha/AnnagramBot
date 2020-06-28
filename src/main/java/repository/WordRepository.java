@@ -9,26 +9,23 @@ import java.util.Random;
 public class WordRepository extends AbstractRepository {
 
     private static int maxID() {
-        openSession();
         query = session.createQuery("SELECT max(wordID) FROM Word");
-        int maxID = (int) query.getSingleResult();
-        closeSession();
-        return maxID;
+        return (int) query.getSingleResult();
     }
 
-    public static void add(Word word) {
+    public static void add(String word) {
         openSession();
         session.beginTransaction();
-        session.save(word);
+        session.save(new Word(word));
         session.getTransaction().commit();
         closeSession();
     }
 
-    public static Word get() {
+    public static String get() {
         openSession();
         query = session.createQuery("FROM Word WHERE wordID = " + new Random().nextInt(maxID()));
         Word word = (Word) query.getSingleResult();
         closeSession();
-        return null;
+        return word.toString();
     }
 }

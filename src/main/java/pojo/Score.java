@@ -7,8 +7,13 @@ import javax.persistence.*;
 public class Score {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int entryID;
+    @GeneratedValue(strategy=GenerationType.SEQUENCE,
+            generator = "score_id_Sequence")
+    @SequenceGenerator(name = "score_id_Sequence",
+            sequenceName = "score_sequence",
+            initialValue = 0,
+            allocationSize = 1)
+    private int ID;
 
     private long chatID;
 

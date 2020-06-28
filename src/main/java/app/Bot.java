@@ -5,6 +5,10 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
+import pojo.Task;
+import pojo.Word;
+import repository.TaskRepository;
+import repository.WordRepository;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -33,27 +37,25 @@ public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         UpdateLogger.log(update);
         receiveQueue.add(update);
+    }
 
-//        Long chatId = update.getMessage().getChatId();
-//        String inputText = update.getMessage().getText();
-
-//        System.out.println(update.getMessage().getSticker());
-//
-//        SendSticker sendSticker = new SendSticker();
-//        sendSticker.setChatId(chatId);
-//        sendSticker.setSticker(app.Sticker.THUMB_UP_CAT.toString());
-//        execute(sendSticker);
-
-//        app.AnagramHandler anagramHandler = new app.AnagramHandler();
-//
-//        SendMessage sendMessage = new SendMessage(chatId, anagramHandler.getMessage());
-//        sendMessage.enableHtml(true);
-//        execute(sendMessage);
-//
-//        String request = anagramHandler.guess(update.getMessage().getText(), update.getMessage().getFrom());
-//        if (request != null) {
-//            execute(new SendMessage(chatId, request));
-//        }
+    public static void main(String[] args) {
+        WordRepository.add("asd");
+        WordRepository.add("asd");
+        WordRepository.add("asd");
+        WordRepository.add("asd");
+        TaskRepository.add(new Task(123124,"asd","asdfgg"));
+        TaskRepository.add(new Task(123124,"asd","asdfgg"));
+        TaskRepository.add(new Task(123124,"asd","asdfgg"));
+        TaskRepository.add(new Task(123124,"asd","asdfgg"));
+        TaskRepository.add(new Task(123124,"asd","asdfgg"));
+        TaskRepository.add(new Task(123124,"asd","asdfgg"));
+        TaskRepository.add(new Task(123124,"asd","asdfgg"));
+        System.out.println(WordRepository.get());
+        System.out.println(WordRepository.get());
+        System.out.println(WordRepository.get());
+        System.out.println(WordRepository.get());
+        System.out.println(WordRepository.get());
     }
 
     @Override

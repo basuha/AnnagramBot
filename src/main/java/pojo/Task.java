@@ -1,6 +1,10 @@
 package pojo;
 
-import javax.annotation.processing.Generated;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import repository.TaskRepository;
+
 import javax.persistence.*;
 import java.util.Map;
 
@@ -8,8 +12,13 @@ import java.util.Map;
 public class Task {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int taskID;
+    @GeneratedValue(strategy=GenerationType.SEQUENCE,
+            generator = "task_id_Sequence")
+    @SequenceGenerator(name = "task_id_Sequence",
+            sequenceName = "task_sequence",
+            initialValue = 0,
+            allocationSize = 1)
+    private int ID;
 
     private long chatID;
 
@@ -28,7 +37,7 @@ public class Task {
     @Override
     public String toString() {
         return "pojo.Task{" +
-                "taskID=" + taskID +
+                "taskID=" + ID +
                 ", chatID=" + chatID +
                 ", taskKey='" + taskKey + '\'' +
                 ", taskValue='" + taskValue + '\'' +

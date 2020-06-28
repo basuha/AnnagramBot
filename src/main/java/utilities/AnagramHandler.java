@@ -4,47 +4,45 @@ import app.Bot;
 import org.apache.log4j.Logger;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import pojo.TaskHandler;
-import repository.WordRepository;
+import repository.TaskRepository;
 
 import java.util.*;
 
 public class AnagramHandler implements Runnable {
     private static final Logger log = Logger.getLogger(AnagramHandler.class);
 
-    private Map<Long, TaskHandler> task = new LinkedHashMap<>();
-
-    private static final String NEXT_LINE = "\n";
-    private static final String MESSAGE = "Угадайте следующие слова: " + NEXT_LINE;
-    private static final String OP_B_TAG = "<b>";
-    private static final String CL_B_TAG = "</b>";
-    private static final String NAME_TAG = "@";
+    private Map<Long, TaskHandler> commonMap = new LinkedHashMap<>();
 
     private static final String START_COMMAND = "/start";
     private static final String TASK_COMMAND = "/task";
     private static final String LOCAL_RATING_COMMAND = "/rating";
     private static final String OVERALL_RATING_COMMAND = "/overall";
 
-    private String chatID;
-    private String inputText;
-
     private Bot bot;
 
     public AnagramHandler(Bot bot) {
         System.out.println("вызов конструктора");
         this.bot = bot;
-        refresh();
     }
 
     public void parseUpdate(Update update) throws TelegramApiException {
-        switch (update.getMessage().getText()) {
+
+        long chatID = update.getMessage().getChatId();
+        String message = update.getMessage().getText();
+        String userName = update.getMessage().getFrom().getUserName();
+
+        if (!TaskRepository.contains(chatID) || !commonMap.containsKey(chatID))
+            commonMap.put(chatID, new TaskHandler(chatID));
+
+        switch (message) {
             case START_COMMAND:
                 System.out.println("start");
+                bot.execute(new SendMessage(chatID, "Привет, " + userName).enableHtml(true));
                 break;
             case TASK_COMMAND:
-                showTask(update.getMessage().getChatId());
+                System.out.println(commonMap.get(chatID).showTask());
+                bot.execute(new SendMessage(chatID, commonMap.get(chatID).showTask()).enableHtml(true));
                 break;
             case LOCAL_RATING_COMMAND:
                 System.out.println("rating command");
@@ -52,49 +50,23 @@ public class AnagramHandler implements Runnable {
             case OVERALL_RATING_COMMAND:
                 System.out.println("overall rating");
             default:
-                String guessed = guess(update.getMessage().getText(), update.getMessage().getFrom());
+                String guessed = commonMap.get(chatID).guess(message, userName);
                 if (guessed != null)
-                    bot.execute(new SendMessage(update.getMessage().getChatId(),guessed).enableHtml(true));
+                    bot.execute(new SendMessage(update.getMessage().getChatId(), guessed).enableHtml(true));
         }
     }
 
-    private void showTask(long chatID) throws TelegramApiException {
-        StringBuilder message = new StringBuilder(MESSAGE + OP_B_TAG);
-
-        for (Map.Entry<Long, TaskHandler> m : task.entrySet())
-            message.append(m.getValue())
-                    .append(NEXT_LINE);
-        message.append(CL_B_TAG);
-
-        bot.execute(new SendMessage(chatID, message.toString()).enableHtml(true));
-    }
-
-    public void get() {
-        log.info(task.size());
-        String nextWord = WordRepository.get();
-        task.put(nextWord, anagramize(nextWord));
-        log.info(task);
-    }
-
-    public String guess(String message, User user) {
-        for (String w : message.toLowerCase()
-                .replaceAll("([?!:;,.])", "")
-                .replaceAll("([\\-`_])", " ")
-                .split(" ")) {
-            if (task.containsKey(w)) {
-                String guessed = task.remove(w);
-                return OP_B_TAG + guessed + CL_B_TAG + " - угадано! " +
-                        "Ответ: " + OP_B_TAG + w.toUpperCase() + CL_B_TAG + ". " + //TODO: words, which not guessed gradually changes color from white to red
-                        "Победитель " + OP_B_TAG + NAME_TAG + user.getUserName() + CL_B_TAG; //TODO: if chat.getType() == private dont show name
-            }
-        }
-        return null;
-    }
-
-    private void refresh() {
-        for (int i = task.size(); i < 5; i++)
-            get();
-    }
+//    public void get() {
+//        log.info(commonMap.size());
+//        String nextWord = WordRepository.get();
+//        commonMap.put(nextWord, anagramize(nextWord));
+//        log.info(commonMap);
+//    }
+//
+//    private void refresh() {
+//        for (int i = commonMap.size(); i < 5; i++)
+//            get();
+//    }
 
 
     @Override

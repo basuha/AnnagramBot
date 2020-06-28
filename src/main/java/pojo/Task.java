@@ -16,16 +16,16 @@ public class Task{
 
     private long chatID;
 
-    private String taskKey;
+    private String key;
 
-    private String taskValue;
+    private String value;
 
     public Task() {}
 
-    public Task(long chatID, String taskKey, String taskValue) {
+    public Task(long chatID, String key, String value) {
         this.chatID = chatID;
-        this.taskKey = taskKey;
-        this.taskValue = taskValue;
+        this.key = key;
+        this.value = value;
     }
 
     @Override
@@ -33,16 +33,20 @@ public class Task{
         return "pojo.Task{" +
                 "taskID=" + ID +
                 ", chatID=" + chatID +
-                ", taskKey='" + taskKey + '\'' +
-                ", taskValue='" + taskValue + '\'' +
+                ", taskKey='" + key + '\'' +
+                ", taskValue='" + value + '\'' +
                 '}';
     }
 
-    public String getTaskKey() {
-        return taskKey;
+    public int getID() {
+        return ID;
     }
 
-    public String getTaskValue() {
-        return taskValue;
+    public String getKey() {
+        return key;
+    }
+
+    public String getValue() {
+        return value;
     }
 }

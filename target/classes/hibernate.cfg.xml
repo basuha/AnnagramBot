@@ -5,7 +5,7 @@
     <session-factory>
 
     <property name="hibernate.dialect">
-        app.SQLiteDialect
+        utilities.SQLiteDialect
     </property>
 
     <property name="hibernate.connection.driver_class">
@@ -47,7 +47,6 @@
         <mapping class="pojo.Score"/>
         <mapping class="pojo.Task"/>
         <mapping class="pojo.Word"/>
-        <mapping class="pojo.TaskComplex"/>
 
     </session-factory>
 

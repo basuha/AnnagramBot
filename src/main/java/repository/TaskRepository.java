@@ -3,6 +3,7 @@ package repository;
 import pojo.Task;
 
 import javax.persistence.Transient;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskRepository extends AbstractRepository {
@@ -17,8 +18,9 @@ public class TaskRepository extends AbstractRepository {
 
     public static void delete(Task task) {
         openSession();
+        Task task1 = session.get(Task.class,task.getID());
         session.beginTransaction();
-        session.delete(task);
+        session.delete(task1);
         session.getTransaction().commit();
         closeSession();
     }
@@ -26,8 +28,13 @@ public class TaskRepository extends AbstractRepository {
     public static List<Task> get(long chatID) {
         openSession();
         query = session.createQuery("FROM Task WHERE chatID = " + chatID);
-        List<Task> tasks = query.getResultList();
+        List<Task> tasks = new ArrayList<>();
+        tasks.addAll(query.getResultList());
         closeSession();
         return tasks;
+    }
+
+    public static boolean contains(long chatID) {
+        return !get(chatID).isEmpty();
     }
 }

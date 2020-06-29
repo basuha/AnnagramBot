@@ -33,6 +33,14 @@ public class BotUserRepository extends AbstractRepository {
         return botUsers;
     }
 
+    public static List<BotUser> getAll() {
+        openSession();
+        query = session.createQuery("FROM BotUser");
+        List<BotUser> botUsers = new ArrayList<>(query.getResultList());
+        closeSession();
+        return botUsers;
+    }
+
     public static boolean isIntroduced(int userID, long chatID) {
         return !getByID(userID).isEmpty() && !getByChatID(chatID).isEmpty();
     }

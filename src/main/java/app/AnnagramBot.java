@@ -72,7 +72,7 @@ public class AnnagramBot implements Runnable {
                     -> bot.execute(new SendMessage(chatID,new ScoreHandler(chatID).showLocalScores(update)).enableHtml(true));
 
             case OVERALL_RATING_COMMAND + BOT_NAME, OVERALL_RATING_COMMAND
-                    -> System.out.println("overall rating");
+                    -> bot.execute(new SendMessage(chatID,new ScoreHandler().showOverallScores()).enableHtml(true));
 
             case HINT_COMMAND + BOT_NAME, HINT_COMMAND
                     -> System.out.println("hint");

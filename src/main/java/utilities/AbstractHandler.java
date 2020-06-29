@@ -21,6 +21,9 @@ public abstract class AbstractHandler {
         this.chatID = chatID;
     }
 
+    public AbstractHandler() {
+    }
+
     protected void initUpdate(Update update) {
         this.message = update.getMessage().getText();
         this.userName = update.getMessage().getFrom().getUserName();

@@ -2,24 +2,23 @@ package utilities;
 
 import com.google.common.base.Joiner;
 import org.apache.commons.lang3.StringUtils;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.User;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import pojo.Task;
 import repository.TaskRepository;
 import repository.WordRepository;
 
-import javax.persistence.*;
 import java.util.*;
 
 public class TaskHandler {
 
-    private static final int TASK_LIMIT = 5;
+    private static final int TASK_LIMIT = 10;
 
     private static final String NEXT_LINE = "\n";
     private static final String MESSAGE = "Угадайте следующие слова: " + NEXT_LINE;
     private static final String OP_B_TAG = "<b>";
     private static final String CL_B_TAG = "</b>";
+    private static final String OP_CODE_TAG = "<code>";
+    private static final String CL_CODE_TAG = "</code>";
     private static final String NAME_TAG = "@";
 
     private List<Task> tasks = new LinkedList<>();
@@ -28,12 +27,12 @@ public class TaskHandler {
 
     public TaskHandler(long chatID) {
         this.chatID = chatID;
-        refreshTaskInChat();
+        refreshTaskForChat();
     }
 
     public List<Task> getTasks() {
         if (tasks.size() < TASK_LIMIT)
-            refreshTaskInChat();
+            refreshTaskForChat();
         return tasks;
     }
 
@@ -41,38 +40,72 @@ public class TaskHandler {
         StringBuilder message = new StringBuilder(MESSAGE + OP_B_TAG);
 
         for (Task t : getTasks())
-            message.append(t.getValue())
+            message.append(OP_CODE_TAG)
+                    .append("(+")
+                    .append(t.getComplexity())
+                    .append(") ")
+                    .append(CL_CODE_TAG)
+                    .append(t.getValue())
+                    .append(" ")
                     .append(NEXT_LINE);
         message.append(CL_B_TAG);
 
         return message.toString();
     }
 
-    public String guess(String message, String userName) {
+    public String guess(Update update) {
+        String message = update.getMessage().getText();
+        String userName = update.getMessage().getFrom().getUserName();
+        boolean isGroupChat = update.getMessage().getChat().isGroupChat();
+
+        StringBuilder outputMessage = new StringBuilder();
         for (String w : message.toLowerCase()
                 .replaceAll("([?!:;,.])", "")
                 .replaceAll("([\\-`_])", " ")
                 .split(" ")) {
             for (Task t : tasks) {
                 if (t.getKey().equals(w)) {
-                    String guessed = remove(t);
-                    return OP_B_TAG + guessed + CL_B_TAG + " - угадано! " +
-                            "Ответ: " + OP_B_TAG + w.toUpperCase() + CL_B_TAG + ". " + //TODO: words, which not guessed gradually changes color from white to red
-                            "Победитель " + OP_B_TAG + NAME_TAG + userName + CL_B_TAG; //TODO: if chat.getType() == private dont show name
+                    String guessed = t.getValue();
+                    remove(t);
+                    incrementAllTasks();
+                    refreshTaskForChat();
+
+
+                    outputMessage.append(OP_B_TAG).append(guessed).append(CL_B_TAG).append(" - угадано! ")
+                            .append("Ответ: ").append(OP_B_TAG).append(w.toUpperCase()).append(CL_B_TAG).append(". ")
+                            .append(NEXT_LINE);
+
+                    if (isGroupChat)
+                        outputMessage.append("Победитель ")
+                                .append(OP_B_TAG)
+                                .append(NAME_TAG)
+                                .append(userName)
+                                .append(CL_B_TAG)
+                                .append(NEXT_LINE);
+
+                    outputMessage.append(OP_CODE_TAG).append("+").append(t.getComplexity()).append(CL_CODE_TAG)
+                            .append(NEXT_LINE) //TODO: add overall points
+                            .append(NEXT_LINE)
+                            .append(showTask());
+
+                    return outputMessage.toString();
                 }
             }
         }
         return null;
     }
 
-    private String remove(Task task) {
-        tasks.remove(task);
-        TaskRepository.delete(task);
-        refreshTaskInChat();
-        return task.getValue();
+    private void incrementAllTasks() {
+        for (var t : tasks)
+            t.incrementComplexity();
     }
 
-    private void refreshTaskInChat() {
+    private void remove(Task task) {
+        tasks.remove(task);
+        TaskRepository.delete(task);
+    }
+
+    private void refreshTaskForChat() {
         System.out.println("hi");
         for (int i = TaskRepository.get(chatID).size(); i < TASK_LIMIT; i++) { //TODO: new word should add on the place of deleted word
             String word = WordRepository.get();

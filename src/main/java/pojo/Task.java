@@ -1,9 +1,11 @@
 package pojo;
 
+import repository.TaskRepository;
+
 import javax.persistence.*;
 
 @Entity
-public class Task{
+public class Task {
 
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE,
@@ -19,6 +21,8 @@ public class Task{
     private String key;
 
     private String value;
+
+    private int complexity = 1;
 
     public Task() {}
 
@@ -38,6 +42,36 @@ public class Task{
                 '}';
     }
 
+    public void incrementComplexity() {
+        complexity = TaskRepository.complexityInc(this);
+    }
+
+
+
+    //TODO: setters for debug only. remove before release
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public void setChatID(long chatID) {
+        this.chatID = chatID;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public void setComplexity(int complexity) {
+        this.complexity = complexity;
+    }
+
+
+
+
     public int getID() {
         return ID;
     }
@@ -48,5 +82,9 @@ public class Task{
 
     public String getValue() {
         return value;
+    }
+
+    public int getComplexity() {
+        return complexity;
     }
 }

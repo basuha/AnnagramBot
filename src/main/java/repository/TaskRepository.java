@@ -3,6 +3,7 @@ package repository;
 import pojo.Task;
 
 import javax.persistence.Transient;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,5 +37,18 @@ public class TaskRepository extends AbstractRepository {
 
     public static boolean contains(long chatID) {
         return !get(chatID).isEmpty();
+    }
+
+    public static int complexityInc(Task task) {
+        openSession();
+        int newComplexity = task.getComplexity() + 1;
+        session.beginTransaction();
+        session.createQuery("UPDATE Task" +
+                " SET complexity = " + newComplexity +
+                " WHERE ID = " + task.getID())
+                .executeUpdate();
+        session.getTransaction().commit();
+        closeSession();
+        return newComplexity;
     }
 }

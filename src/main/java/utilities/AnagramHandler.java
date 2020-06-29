@@ -50,9 +50,9 @@ public class AnagramHandler implements Runnable {
             case OVERALL_RATING_COMMAND:
                 System.out.println("overall rating");
             default:
-                String guessed = commonMap.get(chatID).guess(message, userName);
+                String guessed = commonMap.get(chatID).guess(update);
                 if (guessed != null)
-                    bot.execute(new SendMessage(update.getMessage().getChatId(), guessed).enableHtml(true));
+                    bot.execute(new SendMessage(chatID, guessed).enableHtml(true));
         }
     }
 

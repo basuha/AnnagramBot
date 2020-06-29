@@ -20,8 +20,7 @@ public class BotUserRepository extends AbstractRepository {
     public static List<BotUser> getByID(int userID) {
         openSession();
         query = session.createQuery("FROM BotUser WHERE userID = " + userID);
-        List<BotUser> botUsers = new ArrayList<>();
-        botUsers.addAll(query.getResultList());
+        List<BotUser> botUsers = new ArrayList<>(query.getResultList());
         closeSession();
         return botUsers;
     }
@@ -29,14 +28,24 @@ public class BotUserRepository extends AbstractRepository {
     public static List<BotUser> getByChatID(long chatID) {
         openSession();
         query = session.createQuery("FROM BotUser WHERE chatID = " + chatID);
-        List<BotUser> botUsers = new ArrayList<>();
-        botUsers.addAll(query.getResultList());
+        List<BotUser> botUsers = new ArrayList<>(query.getResultList());
         closeSession();
         return botUsers;
     }
 
     public static boolean isIntroduced(int userID, long chatID) {
         return !getByID(userID).isEmpty() && !getByChatID(chatID).isEmpty();
+    }
+
+    public static BotUser getBotUser(int userID, long chatID) {
+        openSession();
+        query = session.createQuery("FROM BotUser" +
+                " WHERE userID = " + userID +
+                " AND chatID = " + chatID);
+        List<BotUser> botUsers = new ArrayList<>();
+        botUsers.addAll(query.getResultList());
+        closeSession();
+        return botUsers.get(0);
     }
 
     public static int incrementGuessCount(BotUser botUser) {
@@ -55,7 +64,7 @@ public class BotUserRepository extends AbstractRepository {
 
     public static int incrementScore(BotUser botUser, int score) {
         openSession();
-        int incrementedScore = botUser.getGuessCount() + score;
+        int incrementedScore = botUser.getScore() + score;
         session.beginTransaction();
         session.createQuery("UPDATE BotUser" +
                 " SET score = " + incrementedScore +

@@ -3,30 +3,24 @@ package utilities;
 import com.google.common.base.Joiner;
 import org.apache.commons.lang3.StringUtils;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import pojo.BotUser;
 import pojo.Task;
+import repository.BotUserRepository;
 import repository.TaskRepository;
 import repository.WordRepository;
 
 import java.util.*;
 
-public class TaskHandler {
+public class TaskHandler extends AbstractHandler {
 
     private static final int TASK_LIMIT = 10;
 
-    private static final String NEXT_LINE = "\n";
     private static final String MESSAGE = "Угадайте следующие слова: " + NEXT_LINE;
-    private static final String OP_B_TAG = "<b>";
-    private static final String CL_B_TAG = "</b>";
-    private static final String OP_CODE_TAG = "<code>";
-    private static final String CL_CODE_TAG = "</code>";
-    private static final String NAME_TAG = "@";
 
     private List<Task> tasks = new LinkedList<>();
 
-    protected long chatID;
-
     public TaskHandler(long chatID) {
-        this.chatID = chatID;
+        super(chatID);
         refreshTaskForChat();
     }
 
@@ -54,9 +48,10 @@ public class TaskHandler {
     }
 
     public String guess(Update update) {
-        String message = update.getMessage().getText();
-        String userName = update.getMessage().getFrom().getUserName();
-        boolean isGroupChat = update.getMessage().getChat().isGroupChat();
+
+        initUpdate(update);
+
+        BotUser botUser = BotUserRepository.getBotUser(userID,chatID);
 
         StringBuilder outputMessage = new StringBuilder();
         for (String w : message.toLowerCase()
@@ -87,6 +82,8 @@ public class TaskHandler {
                             .append(NEXT_LINE)
                             .append(showTask());
 
+                    botUser.incrementScore(t.getComplexity());
+
                     return outputMessage.toString();
                 }
             }
@@ -105,7 +102,8 @@ public class TaskHandler {
     }
 
     private void refreshTaskForChat() {
-        for (int i = TaskRepository.get(chatID).size(); i < TASK_LIMIT; i++) { //TODO: new word should add on the place of deleted word
+        List<Task> currentTasks = TaskRepository.get(chatID);
+        for (int i = currentTasks.size(); i < TASK_LIMIT; i++) {
             String word = WordRepository.get();
             TaskRepository.add(new Task(
                     chatID,
@@ -113,7 +111,7 @@ public class TaskHandler {
                     anagramize(word)));
         }
         tasks.clear();
-        tasks.addAll(TaskRepository.get(chatID));
+        tasks.addAll(currentTasks);
     }
 
     private String anagramize(String word) {

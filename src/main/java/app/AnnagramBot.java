@@ -7,6 +7,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import pojo.BotUser;
 import repository.TaskRepository;
 import repository.BotUserRepository;
+import utilities.AbstractHandler;
+import utilities.ScoreHandler;
 import utilities.TaskHandler;
 import utilities.loggers.MessageLogger;
 
@@ -19,7 +21,7 @@ public class AnnagramBot implements Runnable {
 
     private static final String INFO_COMMAND = "/info";
     private static final String TASK_COMMAND = "/task";
-    private static final String LOCAL_RATING_COMMAND = "/rating";
+    private static final String LOCAL_RATING_COMMAND = "/rank";
     private static final String OVERALL_RATING_COMMAND = "/overall";
     private static final String HINT_COMMAND = "/hint";
 
@@ -60,16 +62,29 @@ public class AnnagramBot implements Runnable {
             commonMap.put(chatID, new TaskHandler(chatID));
 
         switch (message) {
-            case INFO_COMMAND + BOT_NAME, INFO_COMMAND -> bot.execute(new SendMessage(chatID, BOT_INFO).enableHtml(true));
-            case TASK_COMMAND + BOT_NAME, TASK_COMMAND -> bot.execute(new SendMessage(chatID, commonMap.get(chatID).showTask()).enableHtml(true));
-            case LOCAL_RATING_COMMAND + BOT_NAME, LOCAL_RATING_COMMAND -> System.out.println("rating command");
-            case OVERALL_RATING_COMMAND + BOT_NAME, OVERALL_RATING_COMMAND -> System.out.println("overall rating");
-            case HINT_COMMAND + BOT_NAME, HINT_COMMAND -> System.out.println("hint");
+            case INFO_COMMAND + BOT_NAME, INFO_COMMAND
+                    -> bot.execute(new SendMessage(chatID, BOT_INFO).enableHtml(true));
+
+            case TASK_COMMAND + BOT_NAME, TASK_COMMAND
+                    -> bot.execute(new SendMessage(chatID, commonMap.get(chatID).showTask()).enableHtml(true));
+
+            case LOCAL_RATING_COMMAND + BOT_NAME, LOCAL_RATING_COMMAND
+                    -> bot.execute(new SendMessage(chatID,new ScoreHandler(chatID).showLocalScores(update)).enableHtml(true));
+
+            case OVERALL_RATING_COMMAND + BOT_NAME, OVERALL_RATING_COMMAND
+                    -> System.out.println("overall rating");
+
+            case HINT_COMMAND + BOT_NAME, HINT_COMMAND
+                    -> System.out.println("hint");
+
+            default -> {
+                String guessed = commonMap.get(chatID).guess(update);
+                if (guessed != null)
+                    bot.execute(new SendMessage(chatID, guessed).enableHtml(true));
+            }
         }
 
-        String guessed = commonMap.get(chatID).guess(update);
-        if (guessed != null)
-            bot.execute(new SendMessage(chatID, guessed).enableHtml(true));
+
     }
 
     @Override

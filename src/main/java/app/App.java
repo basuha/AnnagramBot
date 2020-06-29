@@ -7,22 +7,25 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 public class App {
     private static final Logger log = Logger.getLogger(App.class);
     private static final String BOT_ADMIN = "312541201";
+    private static final String BOT_NAME = "AnnagramBot";
+    private static final String BOT_TOKEN = "1268361427:AAEBI07yEkQ5PbDkczeq0V9stcZ0GmRe5-E";
+
 
     public static void main(String[] args) {
         log.info("app.App is starting...");
         ApiContextInitializer.init();
-        Bot annagramBot = new Bot("AnnagramBot", "1268361427:AAEBI07yEkQ5PbDkczeq0V9stcZ0GmRe5-E");
+        Bot bot = new Bot(BOT_NAME, BOT_TOKEN);
 
-        AnnagramBot anagramHandler = new AnnagramBot(annagramBot);
+        AnnagramBot annagramBot = new AnnagramBot(bot);
 
-        annagramBot.botConnect();
+        bot.botConnect();
 
-        Thread receiver = new Thread(anagramHandler);
+        Thread receiver = new Thread(annagramBot);
         receiver.setDaemon(true);
         receiver.setName("MsgReceiver");
         receiver.start();
 
-        sendStartReport(annagramBot);
+        sendStartReport(bot);
     }
 
     private static void sendStartReport(Bot bot) {

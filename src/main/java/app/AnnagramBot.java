@@ -48,7 +48,7 @@ public class AnnagramBot implements Runnable {
 
     public void parseUpdate(Update update) throws TelegramApiException {
 
-        MessageLogger.log(update);
+        MessageLogger.log(update); //TODO:fix issue with sticker messages
 
         long chatID = update.getMessage().getChatId();
         String message = update.getMessage().getText();
@@ -72,10 +72,10 @@ public class AnnagramBot implements Runnable {
                     -> bot.execute(new SendMessage(chatID,new ScoreHandler(chatID).showLocalScores(update)).enableHtml(true));
 
             case OVERALL_RATING_COMMAND + BOT_NAME, OVERALL_RATING_COMMAND
-                    -> bot.execute(new SendMessage(chatID,new ScoreHandler().showOverallScores()).enableHtml(true));
+                    -> bot.execute(new SendMessage(chatID,new ScoreHandler().showOverallScores()).enableHtml(true)); //TODO:this
 
             case HINT_COMMAND + BOT_NAME, HINT_COMMAND
-                    -> System.out.println("hint");
+                    -> System.out.println("hint"); //TODO:this
 
             default -> {
                 String guessed = commonMap.get(chatID).guess(update);

@@ -4,7 +4,9 @@ import org.apache.log4j.Logger;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import pojo.BotUser;
 import repository.TaskRepository;
+import repository.BotUserRepository;
 import utilities.TaskHandler;
 import utilities.loggers.MessageLogger;
 
@@ -48,6 +50,11 @@ public class AnnagramBot implements Runnable {
 
         long chatID = update.getMessage().getChatId();
         String message = update.getMessage().getText();
+        int userID = update.getMessage().getFrom().getId();
+        String userName = update.getMessage().getFrom().getUserName();
+
+        if (!BotUserRepository.isIntroduced(userID,chatID))
+            BotUserRepository.add(new BotUser(userID,userName,chatID));
 
         if (!TaskRepository.contains(chatID) || !commonMap.containsKey(chatID))
             commonMap.put(chatID, new TaskHandler(chatID));

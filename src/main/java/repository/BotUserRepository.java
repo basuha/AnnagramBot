@@ -1,0 +1,69 @@
+package repository;
+
+import app.Bot;
+import pojo.BotUser;
+import pojo.Task;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class BotUserRepository extends AbstractRepository {
+
+    public static void add(BotUser botUser) {
+        openSession();
+        session.beginTransaction();
+        session.save(botUser);
+        session.getTransaction().commit();
+        closeSession();
+    }
+
+    public static List<BotUser> getByID(int userID) {
+        openSession();
+        query = session.createQuery("FROM BotUser WHERE userID = " + userID);
+        List<BotUser> botUsers = new ArrayList<>();
+        botUsers.addAll(query.getResultList());
+        closeSession();
+        return botUsers;
+    }
+
+    public static List<BotUser> getByChatID(long chatID) {
+        openSession();
+        query = session.createQuery("FROM BotUser WHERE chatID = " + chatID);
+        List<BotUser> botUsers = new ArrayList<>();
+        botUsers.addAll(query.getResultList());
+        closeSession();
+        return botUsers;
+    }
+
+    public static boolean isIntroduced(int userID, long chatID) {
+        return !getByID(userID).isEmpty() && !getByChatID(chatID).isEmpty();
+    }
+
+    public static int incrementGuessCount(BotUser botUser) {
+        openSession();
+        int newGuessCount = botUser.getGuessCount() + 1;
+        session.beginTransaction();
+        session.createQuery("UPDATE BotUser" +
+                " SET guessCount = " + newGuessCount +
+                " WHERE userID = " + botUser.getUserID() +
+                " AND chatID = " + botUser.getChatID())
+                .executeUpdate();
+        session.getTransaction().commit();
+        closeSession();
+        return newGuessCount;
+    }
+
+    public static int incrementScore(BotUser botUser, int score) {
+        openSession();
+        int incrementedScore = botUser.getGuessCount() + score;
+        session.beginTransaction();
+        session.createQuery("UPDATE BotUser" +
+                " SET score = " + incrementedScore +
+                " WHERE userID = " + botUser.getUserID() +
+                " AND chatID = " + botUser.getChatID())
+                .executeUpdate();
+        session.getTransaction().commit();
+        closeSession();
+        return incrementedScore;
+    }
+}

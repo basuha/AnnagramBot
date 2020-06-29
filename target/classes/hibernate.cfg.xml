@@ -44,9 +44,9 @@
         <property name="hibernate.connection.autoReconnect">true</property>
 
 
-        <mapping class="pojo.Score"/>
         <mapping class="pojo.Task"/>
         <mapping class="pojo.Word"/>
+        <mapping class="pojo.BotUser"/>
 
     </session-factory>
 

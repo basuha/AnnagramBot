@@ -70,7 +70,6 @@ public class TaskHandler {
                     incrementAllTasks();
                     refreshTaskForChat();
 
-
                     outputMessage.append(OP_B_TAG).append(guessed).append(CL_B_TAG).append(" - угадано! ")
                             .append("Ответ: ").append(OP_B_TAG).append(w.toUpperCase()).append(CL_B_TAG).append(". ")
                             .append(NEXT_LINE);
@@ -106,7 +105,6 @@ public class TaskHandler {
     }
 
     private void refreshTaskForChat() {
-        System.out.println("hi");
         for (int i = TaskRepository.get(chatID).size(); i < TASK_LIMIT; i++) { //TODO: new word should add on the place of deleted word
             String word = WordRepository.get();
             TaskRepository.add(new Task(

@@ -1,9 +1,6 @@
 package repository;
 
 import pojo.Task;
-
-import javax.persistence.Transient;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -33,4 +33,54 @@ public class Score {
         this.score = score;
     }
 
+    //TODO: setters are debug purposes only
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public void setChatID(long chatID) {
+        this.chatID = chatID;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setUserID(long userID) {
+        this.userID = userID;
+    }
+
+    public void setScore(float score) {
+        this.score = score;
+    }
+
+    public void setGuessCount(int guessCount) {
+        this.guessCount = guessCount;
+    }
+
+
+
+    public int getID() {
+        return ID;
+    }
+
+    public long getChatID() {
+        return chatID;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public long getUserID() {
+        return userID;
+    }
+
+    public float getScore() {
+        return score;
+    }
+
+    public int getGuessCount() {
+        return guessCount;
+    }
 }

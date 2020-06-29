@@ -1,11 +1,10 @@
-package utilities;
+package utilities.loggers;
 
 import app.Bot;
 import org.apache.log4j.Logger;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public class UpdateLogger {
-    private static final Logger log = Logger.getLogger(Bot.class);
+public class UpdateLogger extends AbstractLogger {
 
     public static void log(Update update) {
         log.info("Receive new Update -> updateID: " + update.getUpdateId()

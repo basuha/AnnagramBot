@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import repository.TaskRepository;
 import utilities.TaskHandler;
+import utilities.loggers.MessageLogger;
 
 import java.util.*;
 
@@ -38,15 +39,15 @@ public class AnnagramBot implements Runnable {
 
 
     public AnnagramBot(Bot bot) {
-        System.out.println("вызов конструктора");
         this.bot = bot;
     }
 
     public void parseUpdate(Update update) throws TelegramApiException {
 
+        MessageLogger.log(update);
+
         long chatID = update.getMessage().getChatId();
         String message = update.getMessage().getText();
-        String userName = update.getMessage().getFrom().getUserName();
 
         if (!TaskRepository.contains(chatID) || !commonMap.containsKey(chatID))
             commonMap.put(chatID, new TaskHandler(chatID));

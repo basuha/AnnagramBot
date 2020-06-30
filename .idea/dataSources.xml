@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="anna-base" uuid="60469e51-35a7-412b-8183-724662aaa889">
-      <driver-ref>sqlite.xerial</driver-ref>
+    <data-source source="LOCAL" name="d4vr7tv857a7mk@ec2-18-214-119-135.compute-1.amazonaws.com" uuid="0c75c8d6-2f3c-4537-946f-3dd92051b244">
+      <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:D:\!java\anogramm-bot\anna-base.db</jdbc-url>
-      <libraries>
-        <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.25.1/license.txt</url>
-        </library>
-        <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.25.1/sqlite-jdbc-3.25.1.jar</url>
-        </library>
-      </libraries>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ec2-18-214-119-135.compute-1.amazonaws.com:5432/d4vr7tv857a7mk</jdbc-url>
     </data-source>
   </component>
 </project>

@@ -4,17 +4,16 @@
 <hibernate-configuration>
     <session-factory>
 
-    <property name="hibernate.dialect">
-        utilities.SQLiteDialect
-    </property>
+    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
+    <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+    <property name="hibernate.connection.username">rhycavkisxooxl</property>
+    <property name="hibernate.connection.password">6a1cd19f2ba2d330faf111016d1017fd1cf3a0ba6426ef1ab8f4b0d12bebdca3</property>
+    <property name="hibernate.connection.url">jdbc:postgresql://ec2-18-214-119-135.compute-1.amazonaws.com:5432/d4vr7tv857a7mk</property>
 
-    <property name="hibernate.connection.driver_class">
-        org.sqlite.JDBC
-    </property>
 
-    <property name="hibernate.connection.url">
-        jdbc:sqlite:anna-base.db
-    </property>
+<!--    <property name="hibernate.connection.url">-->
+<!--        jdbc:sqlite:anna-base.db-->
+<!--    </property>-->
 
     <property name="hibernate.connection.provider_class">
         org.hibernate.c3p0.internal.C3P0ConnectionProvider
@@ -36,7 +35,7 @@
     </property>
 
     <property name="hibernate.default_schema">
-        main
+        public
     </property>
 
         <property name="hibernate.connection.release_mode">auto</property>

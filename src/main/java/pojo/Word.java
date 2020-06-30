@@ -6,18 +6,19 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "dictionary")
+@Table(name = "dictionary", schema = "public")
 public class Word {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy=GenerationType.SEQUENCE,
             generator = "dictionary_id_Sequence")
     @SequenceGenerator(name = "dictionary_id_Sequence",
             sequenceName = "dictionary_sequence",
-            initialValue = 0,
             allocationSize = 1)
     private int ID;
 
+    @Column(name = "value")
     private String value;
 
     public Word() {}

@@ -5,23 +5,28 @@ import repository.TaskRepository;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "task", schema = "public")
 public class Task {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy=GenerationType.SEQUENCE,
             generator = "task_id_Sequence")
     @SequenceGenerator(name = "task_id_Sequence",
             sequenceName = "task_sequence",
-            initialValue = 0,
             allocationSize = 1)
     private int ID;
 
+    @Column(name = "chat_id")
     private long chatID;
 
+    @Column(name = "key")
     private String key;
 
+    @Column(name = "value")
     private String value;
 
+    @Column(name = "complexity")
     private int complexity = 1;
 
     public Task() {}

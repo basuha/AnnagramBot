@@ -3,29 +3,33 @@ package pojo;
 import repository.BotUserRepository;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user", schema = "public")
 public class BotUser {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy=GenerationType.SEQUENCE,
             generator = "user_id_Sequence")
     @SequenceGenerator(name = "user_id_Sequence",
             sequenceName = "user_sequence",
-            initialValue = 0,
             allocationSize = 1)
     private int ID;
 
+    @Column(name = "user_id")
     private int userID;
 
+    @Column(name = "user_name")
     private String userName;
 
+    @Column(name = "score")
     private int score;
 
+    @Column(name = "guess_count")
     private int guessCount;
 
+    @Column(name = "chat_id")
     private long chatID;
 
     public BotUser() {}

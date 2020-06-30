@@ -3,6 +3,7 @@ package pojo;
 import repository.BotUserRepository;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -27,9 +28,6 @@ public class BotUser {
 
     private long chatID;
 
-    @Transient
-    private int overallScore;
-
     public BotUser() {}
 
     public BotUser(int userID, String userName, long chatID) {
@@ -38,13 +36,24 @@ public class BotUser {
         this.chatID = chatID;
     }
 
-    public BotUser(int overallScore) {
-        this.overallScore = overallScore;
-    }
-
     public void incrementScore(int score) {
         this.guessCount = BotUserRepository.incrementGuessCount(this);
         this.score = BotUserRepository.incrementScore(this,score);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BotUser botUser = (BotUser) o;
+
+        return userID == botUser.userID;
+    }
+
+    @Override
+    public int hashCode() {
+        return userID;
     }
 
     public int getUserID() {
@@ -65,9 +74,5 @@ public class BotUser {
 
     public long getChatID() {
         return chatID;
-    }
-
-    public int getOverallScore() {
-        return overallScore;
     }
 }

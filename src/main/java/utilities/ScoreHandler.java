@@ -4,7 +4,10 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import pojo.BotUser;
 import repository.BotUserRepository;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ScoreHandler extends AbstractHandler {
 
@@ -50,9 +53,12 @@ public class ScoreHandler extends AbstractHandler {
 
         StringBuilder overallScores = new StringBuilder(OVERALL_MESSAGE + OP_B_TAG + BOT_NAME + CL_B_TAG + NEXT_LINE);
         int place = 0;
-        List<BotUser> botUsers = BotUserRepository.getAll();
-
-        botUsers.sort((o1, o2) -> Integer.compare(o2.getScore(), o1.getScore()));
+        List<BotUser> botUsers = BotUserRepository
+                .getAll()
+                .stream()
+                .distinct()
+                .sorted((o1, o2) -> Integer.compare(o2.getScore(), o1.getScore()))
+                .collect(Collectors.toList());
 
         for (BotUser user : botUsers) {
             overallScores.append(OP_CODE_TAG)
@@ -60,7 +66,7 @@ public class ScoreHandler extends AbstractHandler {
                     .append(". ")
                     .append(user.getUserName())
                     .append(" - ")
-                    .append(user.getScore())
+                    .append(BotUserRepository.getSumScoresOfUser(user.getUserID()))
                     .append(" ")
                     .append("points")
                     .append(CL_CODE_TAG)

@@ -41,6 +41,24 @@ public class BotUserRepository extends AbstractRepository {
         return botUsers;
     }
 
+    public static long getSumScoresOfUser(int userID) {
+        openSession();
+        query = session.createQuery("SELECT sum(score) FROM BotUser " +
+                " WHERE userID = " + userID);
+        long sum = (long) query.getSingleResult();
+        closeSession();
+        return sum;
+    }
+
+    public static long getSumGuessedWordsOfUser(int userID) {
+        openSession();
+        query = session.createQuery("SELECT sum(guessCount) FROM BotUser " +
+                " WHERE userID = " + userID);
+        long sum = (long) query.getSingleResult();
+        closeSession();
+        return sum;
+    }
+
     public static boolean isIntroduced(int userID, long chatID) {
         return !getByID(userID).isEmpty() && !getByChatID(chatID).isEmpty();
     }

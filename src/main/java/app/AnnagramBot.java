@@ -28,7 +28,7 @@ public class AnnagramBot implements Runnable {
     private static final String BOT_NAME = "@AnnagramBot";
 
 
-    private Map<Long, TaskHandler> commonMap = new LinkedHashMap<>();
+    private Map<Long, TaskHandler> commonMap = new LinkedHashMap<>(); //key is chatID, value is task for specific chat
 
     private static final String BOT_INFO = "<b>Привет!</b>\n\nЯ бот-генератор анаграм. " +
             "Я использую базу частоупотребимых существительных русского языка из около 1700 слов. \n\n" +
@@ -55,12 +55,12 @@ public class AnnagramBot implements Runnable {
         int userID = update.getMessage().getFrom().getId();
         String userName = update.getMessage().getFrom().getUserName();
 
-        if (message == null || message.matches("\\d+|\\W+")) return; //if no text to parse return
+        if (message == null || message.matches("\\d+|\\W+")) return;  //if no text to parse then return
 
-        if (!BotUserRepository.isIntroduced(userID,chatID))
-            BotUserRepository.add(new BotUser(userID,userName,chatID));
+        if (!BotUserRepository.isIntroduced(userID,chatID))    //if user is absent in bot`s database
+            BotUserRepository.add(new BotUser(userID,userName,chatID)); //add user into database
 
-        if (!TaskRepository.contains(chatID) || !commonMap.containsKey(chatID))
+        if (!TaskRepository.contains(chatID) || !commonMap.containsKey(chatID)) //is any
             commonMap.put(chatID, new TaskHandler(chatID));
 
         switch (message) {

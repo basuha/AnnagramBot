@@ -15,6 +15,9 @@ public class TaskHandler extends AbstractHandler {
 
     private static final int TASK_LIMIT = 10;
 
+    private static final String PARSE_REGEX = "([?!:;,.)(])";
+    private static final String SPLIT_REGEX = "([\\-`_])";
+
     private static final String MESSAGE = "Угадайте следующие слова: " + NEXT_LINE;
 
     private List<Task> tasks = new LinkedList<>();
@@ -55,8 +58,8 @@ public class TaskHandler extends AbstractHandler {
 
         StringBuilder outputMessage = new StringBuilder();
         for (String w : message.toLowerCase()
-                .replaceAll("([?!:;,.])", "")
-                .replaceAll("([\\-`_])", " ")
+                .replaceAll(PARSE_REGEX, "")
+                .replaceAll(SPLIT_REGEX, " ")
                 .split(" ")) {
             for (Task t : tasks) {
                 if (t.getKey().equals(w)) {

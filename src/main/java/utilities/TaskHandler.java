@@ -27,16 +27,15 @@ public class TaskHandler extends AbstractHandler {
         refreshTaskForChat();
     }
 
-    public List<Task> getTasks() {
-        if (tasks.size() < TASK_LIMIT)
-            refreshTaskForChat();
-        return tasks;
-    }
-
     public String showTask() {
+
         StringBuilder message = new StringBuilder(MESSAGE + OP_B_TAG);
 
-        for (Task t : getTasks())
+        refreshTaskForChat();
+
+        tasks.sort((o1, o2) -> Integer.compare(o2.getComplexity(), o1.getComplexity()));
+
+        for (Task t : tasks)
             message.append(OP_CODE_TAG)
                     .append("(+")
                     .append(t.getComplexity())
@@ -105,16 +104,18 @@ public class TaskHandler extends AbstractHandler {
     }
 
     private void refreshTaskForChat() {
-        List<Task> currentTasks = TaskRepository.get(chatID);
-        for (int i = currentTasks.size(); i < TASK_LIMIT; i++) {
-            String word = WordRepository.get();
-            TaskRepository.add(new Task(
-                    chatID,
-                    word,
-                    anagramize(word)));
+        if (tasks.size() < TASK_LIMIT) {
+            List<Task> currentTasks = TaskRepository.get(chatID);
+            for (int i = currentTasks.size(); i < TASK_LIMIT; i++) {
+                String word = WordRepository.get();
+                TaskRepository.add(new Task(
+                        chatID,
+                        word,
+                        anagramize(word)));
+            }
+            tasks.clear();
+            tasks.addAll(currentTasks);
         }
-        tasks.clear();
-        tasks.addAll(currentTasks);
     }
 
     private String anagramize(String word) {

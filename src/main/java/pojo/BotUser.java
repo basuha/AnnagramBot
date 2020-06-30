@@ -27,6 +27,9 @@ public class BotUser {
 
     private long chatID;
 
+    @Transient
+    private int overallScore;
+
     public BotUser() {}
 
     public BotUser(int userID, String userName, long chatID) {
@@ -35,12 +38,14 @@ public class BotUser {
         this.chatID = chatID;
     }
 
+    public BotUser(int overallScore) {
+        this.overallScore = overallScore;
+    }
+
     public void incrementScore(int score) {
         this.guessCount = BotUserRepository.incrementGuessCount(this);
         this.score = BotUserRepository.incrementScore(this,score);
     }
-
-
 
     public int getUserID() {
         return userID;
@@ -60,5 +65,9 @@ public class BotUser {
 
     public long getChatID() {
         return chatID;
+    }
+
+    public int getOverallScore() {
+        return overallScore;
     }
 }

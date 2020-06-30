@@ -26,6 +26,7 @@ public class ScoreHandler extends AbstractHandler {
         StringBuilder localScores = new StringBuilder(LOCAL_MESSAGE + OP_B_TAG + chatName + CL_B_TAG + NEXT_LINE);
         int place = 0;
         List<BotUser> botUsers = BotUserRepository.getByChatID(chatID);
+
         botUsers.sort((o1, o2) -> Integer.compare(o2.getScore(), o1.getScore()));
 
         for (BotUser user : botUsers) {
@@ -42,7 +43,6 @@ public class ScoreHandler extends AbstractHandler {
             if (place == TABLE_LIMIT)
                 break;
         }
-
         return localScores.toString();
     }
 
@@ -67,7 +67,6 @@ public class ScoreHandler extends AbstractHandler {
                     .append(NEXT_LINE);
             if (place == TABLE_LIMIT)
                 break;
-
         }
         return overallScores.toString();
     }

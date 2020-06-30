@@ -48,12 +48,14 @@ public class AnnagramBot implements Runnable {
 
     public void parseUpdate(Update update) throws TelegramApiException {
 
-        MessageLogger.log(update); //TODO:fix issue with sticker messages
+        MessageLogger.log(update);
 
         long chatID = update.getMessage().getChatId();
         String message = update.getMessage().getText();
         int userID = update.getMessage().getFrom().getId();
         String userName = update.getMessage().getFrom().getUserName();
+
+        if (message == null || message.matches("\\d+|\\W+")) return; //if no text to parse return
 
         if (!BotUserRepository.isIntroduced(userID,chatID))
             BotUserRepository.add(new BotUser(userID,userName,chatID));
@@ -83,8 +85,6 @@ public class AnnagramBot implements Runnable {
                     bot.execute(new SendMessage(chatID, guessed).enableHtml(true));
             }
         }
-
-
     }
 
     @Override

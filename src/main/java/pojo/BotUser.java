@@ -79,4 +79,8 @@ public class BotUser {
     public long getChatID() {
         return chatID;
     }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 }

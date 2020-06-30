@@ -57,16 +57,20 @@ public class ScoreHandler extends AbstractHandler {
                 .getAll()
                 .stream()
                 .distinct()
-                .sorted((o1, o2) -> Integer.compare(o2.getScore(), o1.getScore()))
                 .collect(Collectors.toList());
+
+        for (int i = 0; i < botUsers.size(); i++)
+            botUsers.get(i).setScore((int) BotUserRepository.getSumScoresOfUser(botUsers.get(i).getUserID()));
+
+        botUsers.sort((o1, o2) -> Integer.compare(o2.getScore(), o1.getScore()));
 
         for (BotUser user : botUsers) {
             overallScores.append(OP_CODE_TAG)
                     .append(++place)
                     .append(". ")
-                    .append(user.getUserName())
+                    .append(user.getUserName() == null ? "mister X" : user.getUserName())
                     .append(" - ")
-                    .append(BotUserRepository.getSumScoresOfUser(user.getUserID()))
+                    .append(user.getScore())
                     .append(" ")
                     .append("points")
                     .append(CL_CODE_TAG)

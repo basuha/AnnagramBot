@@ -5,6 +5,7 @@ My Java pet project.
 This bot takes russian word from database and mixes the letters in it. User should guess the word. For every guessed words user obtains the points. The bot can be used both in group chats and in private ones.  
 _Hosted on [Heroku](https://www.heroku.com), uses [Heroku Postgres](https://www.heroku.com/postgres) database.  
 by Arkadiy Nadyrov 2020_
+***
 ### Commands
 Description of bot commands:
 ##### _/task_
@@ -14,11 +15,14 @@ The longer the word remains unsolved, the more complex it is considered, and the
 ***
 Every chat has it own task, and it own score table:  
 ![Screenshot](/screenshots/taskbase_screenshot.png)  
+***
 ##### _/rank_
 Shows a score table for a specific chat:    
 ![Screenshot](/screenshots/rank_screenshot.png)  
 The longer the word remains unsolved, the more complex it is considered, and the more points you can get for guessing it. Each guessed word makes an increment of the complexity of the words not guessed.
+***
 ##### _/overall_
 Shows the overall score table:  
 ![Screenshot](/screenshots/overall_screenshot.png)  
 If the user does not have a login, then marked as Mr. X.
+***

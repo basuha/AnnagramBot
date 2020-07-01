@@ -5,7 +5,6 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
-import utilities.loggers.UpdateLogger;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -31,7 +30,12 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        UpdateLogger.log(update);
+        log.info("Receive new Update -> updateID: " + update.getUpdateId()
+                + " Text: " + update.getMessage().getText()
+                + " From User: " + update.getMessage().getFrom().getUserName()
+                + " From Chat: " + update.getMessage().getChat().getTitle()
+                + " ChatID: " + update.getMessage().getChat().getId());
+
         receiveQueue.add(update);
     }
 

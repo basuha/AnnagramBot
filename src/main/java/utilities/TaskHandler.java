@@ -1,7 +1,9 @@
 package utilities;
 
+import app.App;
 import com.google.common.base.Joiner;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import pojo.BotUser;
 import pojo.Task;
@@ -12,6 +14,8 @@ import repository.WordRepository;
 import java.util.*;
 
 public class TaskHandler extends AbstractHandler {
+
+    private static final Logger log = Logger.getLogger(App.class);
 
     private static final int TASK_LIMIT = 10;
 
@@ -62,6 +66,7 @@ public class TaskHandler extends AbstractHandler {
                 .split(" ")) {
             for (Task t : tasks) {
                 if (t.getKey().equals(w)) {
+
                     String guessed = t.getValue();
                     remove(t);
                     incrementAllTasks();

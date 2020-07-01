@@ -3,7 +3,6 @@ package app;
 import org.apache.log4j.Logger;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import repository.WordRepository;
 
 public class App {
     private static final Logger log = Logger.getLogger(App.class);
@@ -14,7 +13,7 @@ public class App {
 
     public static void main(String[] args) {
         log.info("app.App is starting...");
-        WordRepository.fillBase();
+//        WordRepository.fillBase();
         log.info("dictionary filled");
         ApiContextInitializer.init();
         Bot bot = new Bot(BOT_NAME, BOT_TOKEN);

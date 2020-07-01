@@ -3,10 +3,7 @@ package utilities;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import pojo.BotUser;
 import repository.BotUserRepository;
-
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ScoreHandler extends AbstractHandler {

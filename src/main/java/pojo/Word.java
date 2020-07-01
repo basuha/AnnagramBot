@@ -1,8 +1,5 @@
 package pojo;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.*;
 
 @Entity

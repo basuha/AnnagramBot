@@ -1,6 +1,5 @@
 package app;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.apache.log4j.Logger;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -8,10 +7,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import pojo.BotUser;
 import repository.TaskRepository;
 import repository.BotUserRepository;
-import utilities.AbstractHandler;
 import utilities.ScoreHandler;
 import utilities.TaskHandler;
-import utilities.loggers.MessageLogger;
 
 import java.util.*;
 
@@ -31,7 +28,7 @@ public class AnnagramBot implements Runnable {
 
     private static final String BOT_AUTHOR = "Arkadiy Nadyrov";
     private static final String BOT_NAME = "@AnnagramBot";
-    private static final String BOT_VERSION = "1.0.4";
+    private static final String BOT_VERSION = "1.0.5";
     private static final String BOT_INFO = "<b>Привет!</b>\n\nЯ бот-генератор анаграм. " +
             "Я использую базу частоупотребимых существительных русского языка из около 1500 слов. \n\n" +
             "За каждое угаданное слово я начисляю пользователю определенное количество очков. " +
@@ -48,12 +45,15 @@ public class AnnagramBot implements Runnable {
 
     public void parseUpdate(Update update) throws TelegramApiException { //TODO: multithreading
 
-        MessageLogger.log(update);
-
         long chatID = update.getMessage().getChatId();
         String message = update.getMessage().getText();
         int userID = update.getMessage().getFrom().getId();
         String userName = update.getMessage().getFrom().getUserName();
+
+        log.info("Message from: " + userName
+                + "[id: " + userID + "]"
+                + " text: " + message
+                + ". from chat: " + update.getMessage().getChat().getTitle());
 
         if (message == null || message.matches("\\d+")) return;  //if no text to parse then return
 
@@ -93,7 +93,6 @@ public class AnnagramBot implements Runnable {
     public void run() {
         for (;;) {
             for (Object object = bot.receiveQueue.poll(); object != null; object = bot.receiveQueue.poll()) {
-                log.info("New object for analyze in queue " + object.toString());
                 try {
                     parseUpdate((Update) object);
                 } catch (TelegramApiException e) {

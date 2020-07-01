@@ -66,8 +66,13 @@ public class TaskHandler extends AbstractHandler {
                 .split(" ")) {
             for (Task t : tasks) {
                 if (t.getKey().equals(w)) {
-
                     String guessed = t.getValue();
+
+                    log.info("Guessed! " + guessed
+                            + "+" + t.getComplexity()
+                            + " points" + "| by "
+                            + userName + "[" + userID + "]");
+
                     remove(t);
                     incrementAllTasks();
                     refreshTaskForChat();

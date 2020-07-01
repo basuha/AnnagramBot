@@ -80,7 +80,7 @@ public class TaskHandler extends AbstractHandler {
                                 .append(NEXT_LINE);
 
                     outputMessage.append(OP_CODE_TAG).append("+").append(t.getComplexity()).append(CL_CODE_TAG)
-                            .append(NEXT_LINE) //TODO: add overall points
+                            .append(NEXT_LINE)
                             .append(NEXT_LINE)
                             .append(showTask());
 

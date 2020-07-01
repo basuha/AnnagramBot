@@ -1,6 +1,11 @@
 package repository;
 
 import pojo.Word;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Random;
 
 public class WordRepository extends AbstractRepository {
@@ -24,5 +29,19 @@ public class WordRepository extends AbstractRepository {
         Word word = (Word) query.getSingleResult();
         closeSession();
         return word.toString();
+    }
+
+    public static void fillBase() {
+        try {
+            BufferedReader reader = Files.newBufferedReader(Paths.get("rus_comm_noun.txt"));
+            String temp;
+            do {
+                temp = reader.readLine();
+                if (temp == null) break;
+                add(temp);
+            } while (true);
+        } catch (IOException e) {
+            System.out.println("файл не найден");
+        }
     }
 }

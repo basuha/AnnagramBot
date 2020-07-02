@@ -27,7 +27,7 @@
 
 
     <property name="show_sql">
-        false
+        true
     </property>
 
     <property name="connection.pool_size">

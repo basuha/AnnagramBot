@@ -57,7 +57,7 @@ public class BotUserRepository extends AbstractRepository {
     }
 
     public static boolean isIntroduced(int userID, long chatID) {
-        return !getByID(userID).isEmpty() && !getByChatID(chatID).isEmpty();
+        return getBotUser(userID,chatID) != null;
     }
 
     public static BotUser getBotUser(int userID, long chatID) {
@@ -68,7 +68,7 @@ public class BotUserRepository extends AbstractRepository {
         List<BotUser> botUsers = new ArrayList<>();
         botUsers.addAll(query.getResultList());
         closeSession();
-        return botUsers.get(0);
+        return !botUsers.isEmpty() ? botUsers.get(0) : null;
     }
 
     public static int incrementGuessCount(BotUser botUser) {

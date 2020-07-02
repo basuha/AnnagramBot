@@ -13,6 +13,7 @@ public class ScoreHandler extends AbstractHandler {
     private static final String BOT_NAME = "@AnnagramBot";
     private static final String STAR_EMOJI = "\u2b50\ufe0f";
     private static final String LOCK_EMOJI = "\ud83d\udd12";
+    private static final String SUPER_STAR_EMOJI = "\ud83c\udf1f";
     private static final int TABLE_LIMIT = 10;
     private StringBuilder scores;
 
@@ -59,7 +60,9 @@ public class ScoreHandler extends AbstractHandler {
                     .append(user.getScore())
                     .append(" ")
                     .append("points ")
-                    .append(STAR_EMOJI.repeat(user.getScore() / 1000))
+                    .append(user.getScore() < 10000
+                            ? STAR_EMOJI.repeat(user.getScore() / 1000)
+                            : SUPER_STAR_EMOJI.repeat(user.getScore() / 10000))
                     .append(CL_CODE_TAG)
                     .append(NEXT_LINE);
             if (place == TABLE_LIMIT)

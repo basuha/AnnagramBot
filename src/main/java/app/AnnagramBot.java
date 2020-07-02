@@ -28,7 +28,7 @@ public class AnnagramBot implements Runnable {
 
     private static final String BOT_AUTHOR = "Arkadiy Nadyrov";
     private static final String BOT_NAME = "@AnnagramBot";
-    private static final String BOT_VERSION = "1.0.9";
+    private static final String BOT_VERSION = "1.0.10";
     private static final String BOT_INFO = "<b>Привет!</b>\n\nЯ бот-генератор анаграм. " +
             "Я использую базу частоупотребимых существительных русского языка из около 1500 слов. \n\n" +
             "За каждое угаданное слово я начисляю пользователю определенное количество очков. " +
@@ -43,7 +43,7 @@ public class AnnagramBot implements Runnable {
         this.bot = bot;
     }
 
-    public void parseUpdate(Update update) throws TelegramApiException { //TODO: multithreading
+    public void parseUpdate(Update update) throws TelegramApiException {
 
         long chatID = update.getMessage().getChatId();
         String message = update.getMessage().getText();
@@ -54,8 +54,6 @@ public class AnnagramBot implements Runnable {
                 + "[id: " + userID + "]"
                 + " text: " + message
                 + ". from chat: " + update.getMessage().getChat().getTitle());
-
-        if (message == null || message.matches("\\d+")) return;  //if no text to parse then return
 
         if (!BotUserRepository.isIntroduced(userID,chatID))    //if user is absent in bot`s database
             BotUserRepository.add(new BotUser(userID,userName,chatID)); //add user into database
@@ -94,7 +92,12 @@ public class AnnagramBot implements Runnable {
         for (;;) {
             for (Object object = bot.receiveQueue.poll(); object != null; object = bot.receiveQueue.poll()) {
                 try {
-                    parseUpdate((Update) object);
+                    Update update = (Update) object;
+                    if (!update.hasMessage()
+                            || update.getMessage().getText() == null
+                            || update.getMessage().getChat() == null
+                            || update.getMessage().getFrom() == null) continue;  //if no text to parse then break
+                    parseUpdate( update);
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
                 }

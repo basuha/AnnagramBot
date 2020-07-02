@@ -28,7 +28,7 @@ public class AnnagramBot implements Runnable {
 
     private static final String BOT_AUTHOR = "Arkadiy Nadyrov";
     private static final String BOT_NAME = "@AnnagramBot";
-    private static final String BOT_VERSION = "1.0.10";
+    private static final String BOT_VERSION = "1.0.11";
     private static final String BOT_INFO = "<b>Привет!</b>\n\nЯ бот-генератор анаграм. " +
             "Я использую базу частоупотребимых существительных русского языка из около 1500 слов. \n\n" +
             "За каждое угаданное слово я начисляю пользователю определенное количество очков. " +
@@ -50,13 +50,27 @@ public class AnnagramBot implements Runnable {
         int userID = update.getMessage().getFrom().getId();
         String userName = update.getMessage().getFrom().getUserName();
 
+        String firstName = update.getMessage().getFrom().getFirstName();
+        String lastName = update.getMessage().getFrom().getFirstName();
+
+        if (firstName == null) firstName = "";
+        if (lastName == null) lastName = "";
+
+        String fullName = (firstName + " " + lastName).trim();
+
+        if (fullName.isEmpty()) fullName = null;
+
         log.info("Message from: " + userName
                 + "[id: " + userID + "]"
                 + " text: " + message
                 + ". from chat: " + update.getMessage().getChat().getTitle());
 
         if (!BotUserRepository.isIntroduced(userID,chatID))    //if user is absent in bot`s database
-            BotUserRepository.add(new BotUser(userID,userName,chatID)); //add user into database
+            BotUserRepository.add(new BotUser(
+                    userID,
+                    userName == null
+                            ? fullName
+                            : userName,chatID)); //add user into database
 
         if (!TaskRepository.contains(chatID) || !commonMap.containsKey(chatID)) //is any
             commonMap.put(chatID, new TaskHandler(chatID));
@@ -93,6 +107,7 @@ public class AnnagramBot implements Runnable {
             for (Object object = bot.receiveQueue.poll(); object != null; object = bot.receiveQueue.poll()) {
                 try {
                     Update update = (Update) object;
+                    log.info(update);
                     if (!update.hasMessage()
                             || update.getMessage().getText() == null
                             || update.getMessage().getChat() == null

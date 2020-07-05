@@ -17,18 +17,16 @@ public class AnnagramBot implements Runnable {
 
     private Bot bot;
 
-    private static final String INFO_COMMAND = "/info";
+    private static final String START_COMMAND = "/start";
     private static final String TASK_COMMAND = "/task";
     private static final String LOCAL_RATING_COMMAND = "/rank";
     private static final String OVERALL_RATING_COMMAND = "/overall";
-    private static final String HINT_COMMAND = "/hint";
-    private static final String REMIX_COMMAND = "/remix";
 
     private Map<Long, TaskHandler> commonMap = new LinkedHashMap<>(); //key is chatID, value is task for specific chat
 
     private static final String BOT_AUTHOR = "Arkadiy Nadyrov";
     private static final String BOT_NAME = "@AnnagramBot";
-    private static final String BOT_VERSION = "1.0.11";
+    private static final String BOT_VERSION = "1.0.12";
     private static final String BOT_INFO = "<b>Привет!</b>\n\nЯ бот-генератор анаграм. " +
             "Я использую базу частоупотребимых существительных русского языка из около 1500 слов. \n\n" +
             "За каждое угаданное слово я начисляю пользователю определенное количество очков. " +
@@ -77,7 +75,7 @@ public class AnnagramBot implements Runnable {
 
         switch (message) {
 
-            case INFO_COMMAND + BOT_NAME, INFO_COMMAND
+            case START_COMMAND + BOT_NAME, START_COMMAND
                     -> bot.execute(
                             new SendMessage(chatID, BOT_INFO).enableHtml(true));
 

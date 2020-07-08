@@ -2,9 +2,11 @@ package utilities;
 
 import app.App;
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.w3c.dom.ls.LSOutput;
 import pojo.BotUser;
 import pojo.Task;
 import repository.BotUserRepository;
@@ -12,6 +14,7 @@ import repository.TaskRepository;
 import repository.WordRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TaskHandler extends AbstractHandler {
 
@@ -121,32 +124,23 @@ public class TaskHandler extends AbstractHandler {
                 TaskRepository.add(new Task(
                         chatID,
                         word,
-                        anagramize(word)));
+                        shuffle(word)));
             }
             tasks.clear();
             tasks.addAll(currentTasks);
         }
     }
 
-    private String anagramize(String word) {
-        List<Character> anagram = new ArrayList<>();
-        String request;
-
-        for (int i = 0; i < word.length(); i++)
-            anagram.add(null);
-
+    private static String shuffle(String word) {
+        String out;
         do {
-            for (Character c : word.toLowerCase().toCharArray()) {
-                int index;
-                do {
-                    index = new Random().nextInt(word.length());
-                } while (anagram.get(index) != null);
-                anagram.set(index, c);
-            }
-            request = Joiner.on("").join(anagram);
-        } while (request.equals(word));
+            var charsList = word.chars()
+                    .mapToObj(e -> (char) e)
+                    .collect(Collectors.toList());
+            Collections.shuffle(charsList);
+            out = Joiner.on("").join(charsList);
+        } while (out.equals(word));
 
-        return StringUtils.capitalize(request);
+        return StringUtils.capitalize(out);
     }
-
 }

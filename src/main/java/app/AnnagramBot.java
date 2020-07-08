@@ -26,7 +26,7 @@ public class AnnagramBot implements Runnable {
 
     private static final String BOT_AUTHOR = "Arkadiy Nadyrov";
     private static final String BOT_NAME = "@AnnagramBot";
-    private static final String BOT_VERSION = "1.0.12";
+    private static final String BOT_VERSION = "1.0.13";
     private static final String BOT_INFO = "<b>Привет!</b>\n\nЯ бот-генератор анаграм. " +
             "Я использую базу частоупотребимых существительных русского языка из около 1500 слов. \n\n" +
             "За каждое угаданное слово я начисляю пользователю определенное количество очков. " +

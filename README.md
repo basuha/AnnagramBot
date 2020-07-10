@@ -26,5 +26,4 @@ For every thousand points, a star is added to the names of the players:
 ##### _/overall_
 Shows the overall score table:  
 ![Screenshot](/screenshots/overall_screenshot.png)  
-If the user does not have a login, then marked as Mr. X.
 ***

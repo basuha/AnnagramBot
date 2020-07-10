@@ -19,7 +19,9 @@ Every chat has it own task, and it own score table:
 ##### _/rank_
 Shows a score table for a specific chat:    
 ![Screenshot](/screenshots/rank_screenshot.png)  
-The longer the word remains unsolved, the more complex it is considered, and the more points you can get for guessing it. Each guessed word makes an increment of the complexity of the words not guessed.
+***
+For every thousand points, a star is added to the names of the players:  
+![Screenshot](/screenshots/star_screenshot.png)  
 ***
 ##### _/overall_
 Shows the overall score table:  
